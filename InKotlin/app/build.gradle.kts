@@ -25,6 +25,9 @@ android {
             )
         }
     }
+    buildFeatures{
+        viewBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -35,6 +38,7 @@ android {
 }
 val retrofit_version = "2.9.0"
 val okhttp_bom = "4.11.0"
+val lifecycle_version ="2.6.2"
 
 dependencies {
 
@@ -53,4 +57,7 @@ dependencies {
     implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_bom"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
+
+    //ViewModel
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
 }
