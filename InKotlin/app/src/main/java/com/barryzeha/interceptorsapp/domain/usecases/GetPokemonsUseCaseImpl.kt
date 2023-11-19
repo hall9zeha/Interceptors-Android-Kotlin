@@ -4,6 +4,8 @@ import android.util.Log
 import com.barryzeha.interceptorsapp.data.model.PokemonResult
 import com.barryzeha.interceptorsapp.data.repository.Repository
 import com.barryzeha.interceptorsapp.data.repository.RepositoryImpl
+import com.barryzeha.interceptorsapp.domain.model.PokemonEntity
+import com.barryzeha.interceptorsapp.domain.model.toDomain
 
 
 /**
@@ -14,10 +16,10 @@ import com.barryzeha.interceptorsapp.data.repository.RepositoryImpl
 
 class GetPokemonsUseCaseImpl:GetPokemonsUseCase {
     private val repository:Repository = RepositoryImpl()
-    override suspend fun getPokemonList(perPage:Int): List<PokemonResult> {
+    override suspend fun getPokemonList(perPage:Int): List<PokemonEntity> {
         val response = repository.getPokemons(perPage)
         return if(response.isSuccessful){
-            response.body()!!.result
+            response.body()!!.result.map { it.toDomain() }
         }else{
             emptyList()
         }
