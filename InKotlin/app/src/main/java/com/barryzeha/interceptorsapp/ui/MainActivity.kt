@@ -5,28 +5,37 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.barryzeha.interceptorsapp.common.getNumbersOfLastUrl
+import androidx.recyclerview.widget.RecyclerView
 import com.barryzeha.interceptorsapp.databinding.ActivityMainBinding
+import com.barryzeha.interceptorsapp.domain.model.PokemonResponse
 import com.barryzeha.interceptorsapp.ui.adapter.RecyclerViewAdapter
 import com.barryzeha.interceptorsapp.ui.viewModel.MainViewModel
-import java.net.URL
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bind:ActivityMainBinding
     private lateinit var viewModel:MainViewModel
     private lateinit var adapter:RecyclerViewAdapter
+    private lateinit var  scrollListener:RecyclerView.OnScrollListener
+    private lateinit var layoutManager:GridLayoutManager
+    private var isLoading = false
+    private var isLastPage = false
+    //por defecto la api devuelve 20 elementos por llamada, si queremos avanzar a una siguiente página debemos
+    //ir sumando 20 a la cantidad  inicial  por cada llamada (o el número de elementos que hayamos configurado por llamada)
+    private var perPage = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bind = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bind.root)
         setUpRecyclerView()
         setUpVieModel()
-        viewModel.fetchPokemons(20)
+        setUpPaginationRecyclerView()
+        viewModel.fetchPokemonData(perPage)
     }
     private fun setUpRecyclerView(){
         adapter = RecyclerViewAdapter()
+        layoutManager = GridLayoutManager(this@MainActivity,2)
         bind.rvMain.apply {
-            layoutManager = GridLayoutManager(this@MainActivity,2)
+            layoutManager = this@MainActivity.layoutManager
             setHasFixedSize(true)
             adapter=this@MainActivity.adapter
         }
@@ -34,11 +43,37 @@ class MainActivity : AppCompatActivity() {
     }
     private fun setUpVieModel() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        viewModel.pokemonList.observe(this){
-            adapter.addAll(it)
-            Log.e("POKEMON_RESPONSE", it.toString() )
+        viewModel.pokemonResponse.observe(this,::updateUi)
+    }
+    private fun setUpPaginationRecyclerView(){
+        scrollListener = object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
 
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemCount = layoutManager.findFirstVisibleItemPosition()
+                if(!isLoading && !isLastPage){
+                    if((visibleItemCount + firstVisibleItemCount)>=totalItemCount - 2 && firstVisibleItemCount>=0){
+                        loadMoreItems()
+                    }
+                }
+            }
+        }
+        bind.rvMain.addOnScrollListener(scrollListener)
+    }
+    private fun loadMoreItems(){
+        isLoading = true
+        perPage +=20
+        adapter.addLoadingItem()
+        viewModel.fetchPokemonData(perPage)
+    }
+    private fun updateUi(response:PokemonResponse){
+        response?.let{
+            if(isLoading && it.pokemons.isNotEmpty())adapter.removeLoadingItem()
+            isLastPage = (perPage >= response.totalItems )
+            isLoading = false
+            adapter.addAll(it.pokemons)
         }
     }
-
 }

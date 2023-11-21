@@ -5,6 +5,7 @@ import com.barryzeha.interceptorsapp.data.model.PokemonResult
 import com.barryzeha.interceptorsapp.data.repository.Repository
 import com.barryzeha.interceptorsapp.data.repository.RepositoryImpl
 import com.barryzeha.interceptorsapp.domain.model.PokemonEntity
+import com.barryzeha.interceptorsapp.domain.model.PokemonResponse
 import com.barryzeha.interceptorsapp.domain.model.toDomain
 
 
@@ -16,12 +17,13 @@ import com.barryzeha.interceptorsapp.domain.model.toDomain
 
 class GetPokemonsUseCaseImpl:GetPokemonsUseCase {
     private val repository:Repository = RepositoryImpl()
-    override suspend fun getPokemonList(perPage:Int): List<PokemonEntity> {
+    override suspend fun fetchPokemonData(perPage:Int): PokemonResponse {
         val response = repository.getPokemons(perPage)
         return if(response.isSuccessful){
-            response.body()!!.result.map { it.toDomain() }
+            response.body()!!.toDomain()
+           //response.body()!!.result.map { it.toDomain() }
         }else{
-            emptyList()
+            PokemonResponse()
         }
     }
 }

@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.barryzeha.interceptorsapp.data.model.PokemonResult
-import com.barryzeha.interceptorsapp.domain.model.PokemonEntity
+import com.barryzeha.interceptorsapp.domain.model.PokemonResponse
 import com.barryzeha.interceptorsapp.domain.usecases.GetPokemonsUseCase
 import com.barryzeha.interceptorsapp.domain.usecases.GetPokemonsUseCaseImpl
 import kotlinx.coroutines.launch
@@ -19,12 +18,12 @@ import kotlinx.coroutines.launch
 class MainViewModel:ViewModel() {
   private val getPokemonUseCase:GetPokemonsUseCase = GetPokemonsUseCaseImpl()
 
- private var _pokemonList:MutableLiveData<List<PokemonEntity>> = MutableLiveData()
- val pokemonList: LiveData<List<PokemonEntity>> = _pokemonList
+ private var _pokemonResponse:MutableLiveData<PokemonResponse> = MutableLiveData()
+ val pokemonResponse: LiveData<PokemonResponse> = _pokemonResponse
 
- fun fetchPokemons(perPage:Int){
+ fun fetchPokemonData(perPage:Int){
      viewModelScope.launch {
-         _pokemonList.value = getPokemonUseCase.getPokemonList(perPage)
+         _pokemonResponse.value = getPokemonUseCase.fetchPokemonData(perPage)
      }
  }
 

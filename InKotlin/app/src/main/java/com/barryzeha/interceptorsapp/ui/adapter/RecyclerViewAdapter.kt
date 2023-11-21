@@ -18,33 +18,71 @@ import com.barryzeha.interceptorsapp.domain.model.PokemonEntity
  * Copyright (c)  All rights reserved.
  **/
 
-class RecyclerViewAdapter:RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
- private var itemList:MutableList<PokemonEntity> = arrayListOf()
- override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-   val context = parent.context
-   val itemView = LayoutInflater.from(context).inflate(R.layout.item_layout,parent, false)
-   return ViewHolder(itemView)
- }
+class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
- override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-   holder.onBind(itemList[position])
- }
- fun addAll(items:List<PokemonEntity>){
-  items.forEach { add(it) }
- }
- private fun add(item:PokemonEntity){
-  if(!itemList.contains(item)){
-   itemList.add(item)
-   notifyItemInserted(itemList.size-1)
-  }
- }
- override fun getItemCount() = itemList.size
+    private var itemList: MutableList<PokemonEntity> = arrayListOf()
+    private var isLoading:Boolean = false
+    private val VIEW_TYPE_NORMAL = 1
+    private val VIEW_TYPE_LOADING = 2
 
- inner class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
-     val bind = ItemLayoutBinding.bind(itemView)
-   fun onBind(pokemon:PokemonEntity)= with(bind){
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val context = parent.context
+        val itemView = LayoutInflater.from(context).inflate(R.layout.item_layout, parent, false)
+        val itemLoading = LayoutInflater.from(context).inflate(R.layout.item_loading,parent,false)
+        return when(viewType){
+            VIEW_TYPE_NORMAL->ViewHolder(itemView)
+            else->ViewHolderLoading(itemLoading)
+        }
+    }
 
-        ivPokemon.loadUrl(pokemon.imageUrl)
-   }
- }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when(holder.itemViewType){
+            VIEW_TYPE_NORMAL->{
+                (holder as ViewHolder).onBind(itemList[position])
+            }
+        }
+
+    }
+
+    fun addAll(items: List<PokemonEntity>) {
+        items.forEach { add(it) }
+    }
+
+    private fun add(item: PokemonEntity) {
+        if (!itemList.contains(item)) {
+            itemList.add(item)
+            notifyItemInserted(itemList.size - 1)
+        }
+    }
+
+    override fun getItemCount() = itemList.size
+    override fun getItemViewType(position: Int): Int {
+        return if (position == itemList.size - 1 && isLoading) {
+            VIEW_TYPE_LOADING
+        } else {
+            VIEW_TYPE_NORMAL
+        }
+    }
+    fun addLoadingItem(){
+        isLoading = true
+        add(PokemonEntity())
+        notifyItemInserted(itemList.size -1)
+    }
+    fun removeLoadingItem(){
+        isLoading=false
+        val position = itemList.size - 1
+        val item = itemList[position]
+        item?.let{
+            itemList.removeAt(position)
+            notifyItemRemoved(position)
+        }
+    }
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val bind = ItemLayoutBinding.bind(itemView)
+        fun onBind(pokemon: PokemonEntity) = with(bind) {
+
+            ivPokemon.loadUrl(pokemon.imageUrl)
+        }
+    }
+    inner class ViewHolderLoading(itemView: View ):RecyclerView.ViewHolder(itemView){}
 }

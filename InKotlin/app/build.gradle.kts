@@ -41,6 +41,7 @@ val retrofit_version = "2.9.0"
 val okhttp_bom = "4.11.0"
 val lifecycle_version ="2.6.2"
 val glide_version = "4.16.0"
+val dot_loading_version = "2.0.0"
 
 dependencies {
 
@@ -67,4 +68,7 @@ dependencies {
     //Glide
     implementation ("com.github.bumptech.glide:glide:$glide_version")
     kapt ("com.github.bumptech.glide:compiler:$glide_version")
+
+    //Dots loading view
+    implementation("com.github.hall9zeha:DotsLoadingView:$dot_loading_version")
 }

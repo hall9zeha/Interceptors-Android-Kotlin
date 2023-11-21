@@ -1,7 +1,6 @@
 package com.barryzeha.interceptorsapp.domain.usecases
 
-import com.barryzeha.interceptorsapp.data.model.PokemonResult
-import com.barryzeha.interceptorsapp.domain.model.PokemonEntity
+import com.barryzeha.interceptorsapp.domain.model.PokemonResponse
 
 
 /**
@@ -11,5 +10,5 @@ import com.barryzeha.interceptorsapp.domain.model.PokemonEntity
  **/
 
 interface GetPokemonsUseCase {
-      suspend fun getPokemonList(perPage:Int):List<PokemonEntity>
+      suspend fun fetchPokemonData(perPage:Int):PokemonResponse
 }
