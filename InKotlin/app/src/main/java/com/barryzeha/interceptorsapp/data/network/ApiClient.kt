@@ -1,6 +1,7 @@
 package com.barryzeha.interceptorsapp.data.network
 
 import com.barryzeha.interceptorsapp.common.BASE_URL
+import com.barryzeha.interceptorsapp.common.utils.MyInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -18,7 +19,9 @@ private var retrofit:Retrofit? = null
 fun getClient():Retrofit{
     val interceptor = HttpLoggingInterceptor()
         .setLevel(HttpLoggingInterceptor.Level.BODY)
-    val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+
+
+    val client = OkHttpClient.Builder().addInterceptor(MyInterceptor()).build()
 
     if (retrofit == null){
         retrofit = Retrofit.Builder()

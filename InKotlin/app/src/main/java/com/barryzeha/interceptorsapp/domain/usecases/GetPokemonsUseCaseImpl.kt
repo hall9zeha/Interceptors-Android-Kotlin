@@ -20,8 +20,8 @@ class GetPokemonsUseCaseImpl:GetPokemonsUseCase {
     override suspend fun fetchPokemonData(perPage:Int): PokemonResponse {
         val response = repository.getPokemons(perPage)
         return if(response.isSuccessful){
+            Log.e("INTERCEPTOR",response.message()  )
             response.body()!!.toDomain()
-           //response.body()!!.result.map { it.toDomain() }
         }else{
             PokemonResponse()
         }
