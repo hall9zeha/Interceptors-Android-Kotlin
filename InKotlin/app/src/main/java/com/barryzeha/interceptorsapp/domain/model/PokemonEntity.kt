@@ -11,10 +11,10 @@ import com.barryzeha.interceptorsapp.data.model.PokemonResult
  * Copyright (c)  All rights reserved.
  **/
 
-data class PokemonResponse(val totalItems:Int=0,val pokemons:List<PokemonEntity> = arrayListOf())
+data class PokemonData(val totalItems:Int=0, val pokemons:List<PokemonEntity> = arrayListOf())
 data class PokemonEntity(val name:String="", val imageUrl:String="")
-fun Pokemon.toDomain():PokemonResponse = with(this){
-    return PokemonResponse(
+fun Pokemon.toDomain():PokemonData = with(this){
+    return PokemonData(
         totalItems = count,
         pokemons = result.map { pokemon->pokemon.toDomain() }
     )

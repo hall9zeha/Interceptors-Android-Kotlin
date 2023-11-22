@@ -1,9 +1,12 @@
 package com.barryzeha.interceptorsapp.ui.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.barryzeha.interceptorsapp.common.utils.SingleMutableLiveData
+import com.barryzeha.interceptorsapp.domain.model.PokemonData
 import com.barryzeha.interceptorsapp.domain.model.PokemonResponse
 import com.barryzeha.interceptorsapp.domain.usecases.GetPokemonsUseCase
 import com.barryzeha.interceptorsapp.domain.usecases.GetPokemonsUseCaseImpl
@@ -15,17 +18,30 @@ import kotlinx.coroutines.launch
  * Copyright (c)  All rights reserved.
  **/
 
-class MainViewModel:ViewModel() {
-  private val getPokemonUseCase:GetPokemonsUseCase = GetPokemonsUseCaseImpl()
+class MainViewModel : ViewModel() {
+    private val getPokemonUseCase: GetPokemonsUseCase = GetPokemonsUseCaseImpl()
 
- private var _pokemonResponse:MutableLiveData<PokemonResponse> = MutableLiveData()
- val pokemonResponse: LiveData<PokemonResponse> = _pokemonResponse
+    private var _pokemonResponse: MutableLiveData<PokemonData> = MutableLiveData()
+    val pokemonResponse: LiveData<PokemonData> = _pokemonResponse
 
- fun fetchPokemonData(perPage:Int){
-     viewModelScope.launch {
-         _pokemonResponse.value = getPokemonUseCase.fetchPokemonData(perPage)
-     }
- }
+    private var _msgUnsuccessful:SingleMutableLiveData<String> = SingleMutableLiveData()
+    val msgUnsuccessful:SingleMutableLiveData<String> = _msgUnsuccessful
+
+    fun fetchPokemonData(perPage: Int) {
+        viewModelScope.launch {
+
+            when (val response = getPokemonUseCase.fetchPokemonData(perPage)) {
+                is PokemonResponse.ResponseSuccess -> {
+                    _pokemonResponse.postValue(response.pokemonResponse)
+                }
+                is PokemonResponse.ResponseError -> {
+                    _msgUnsuccessful.postValue(response.errorMsg)
+                    Log.e("RESPONSE_ERROR", response.errorMsg)
+                }
+            }
+
+        }
+    }
 
 
 }

@@ -19,9 +19,9 @@ class MyInterceptor:Interceptor{
         val request:Request = chain.request()
         val response = chain.proceed(request)
         return when(response.code){
-            400->{response}
-            401->{response}
-            403->{response}
+            400->{setResponse(response,chain,400,"Bad request")}
+            401->{setResponse(response,chain,401,"No autorizado")}
+            403->{setResponse(response,chain,403,"No posee los permisos necesarios")}
             404->{setResponse(response,chain,404,"No hay conexión o la dirección no es correcta")}
             200->{setResponse(response,chain,200,"Respuesta de la API completada correctamente")}
             else->{
@@ -31,7 +31,7 @@ class MyInterceptor:Interceptor{
                     response.close()
                     chain.call().clone().execute()
                 }
-               setResponse(response,chain,401,"No autorizado")
+               setResponse(response,chain,401,"Demasiadas peticiones al servidor")
             }
         }
 
