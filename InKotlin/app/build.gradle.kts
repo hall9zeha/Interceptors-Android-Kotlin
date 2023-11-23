@@ -74,4 +74,11 @@ dependencies {
 
     //Mockk
     testImplementation("io.mockk:mockk:1.12.4")
+
+    //Mockito
+    testImplementation ("org.mockito:mockito-core:4.0.0")
+    testImplementation ("org.mockito:mockito-inline:4.0.0")
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0.0")
+
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2")
 }

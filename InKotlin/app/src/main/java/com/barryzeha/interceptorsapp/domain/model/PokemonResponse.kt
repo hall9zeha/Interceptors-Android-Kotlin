@@ -8,6 +8,6 @@ package com.barryzeha.interceptorsapp.domain.model
  ***/
 
 sealed class PokemonResponse{
-    class ResponseSuccess(val pokemonResponse:PokemonData):PokemonResponse()
-    class ResponseError(val errorMsg:String):PokemonResponse()
+    data class ResponseSuccess(val pokemonResponse:PokemonData):PokemonResponse()
+    data class ResponseError(val errorMsg:String):PokemonResponse()
 }

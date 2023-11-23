@@ -1,6 +1,7 @@
 package com.barryzeha.interceptorsapp.data.repository
 
 import com.barryzeha.interceptorsapp.data.model.Pokemon
+import com.barryzeha.interceptorsapp.data.network.ApiService
 import com.barryzeha.interceptorsapp.data.network.getApi
 import com.barryzeha.interceptorsapp.data.network.getClient
 import retrofit2.Response
@@ -12,8 +13,8 @@ import retrofit2.Response
  * Copyright (c)  All rights reserved.
  **/
 
-class RepositoryImpl:Repository {
- private val api = getApi()
+class RepositoryImpl(private val api:ApiService):Repository {
+ //private val api = getApi()
  override suspend fun getPokemons(perPage: Int): Response<Pokemon> {
    return api.getPokemons(perPage)
  }
