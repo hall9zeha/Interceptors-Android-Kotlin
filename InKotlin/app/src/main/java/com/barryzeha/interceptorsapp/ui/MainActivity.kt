@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private var perPage = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         bind = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bind.root)
         setUpRecyclerView()
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.pokemonResponse.observe(this,::updateUi)
         viewModel.msgUnsuccessful.observe(this){msg->
-            Snackbar.make(bind.root,msg!!,Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(bind.root,msg!!,Snackbar.LENGTH_LONG).show()
         }
     }
     private fun setUpPaginationRecyclerView(){

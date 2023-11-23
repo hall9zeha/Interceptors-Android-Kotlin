@@ -71,4 +71,7 @@ dependencies {
 
     //Dots loading view
     implementation("com.github.hall9zeha:DotsLoadingView:$dot_loading_version")
+
+    //Mockk
+    testImplementation("io.mockk:mockk:1.12.4")
 }

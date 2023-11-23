@@ -16,9 +16,9 @@ import com.barryzeha.interceptorsapp.domain.model.toDomain
 class GetPokemonsUseCaseImpl:GetPokemonsUseCase {
     private val repository:Repository = RepositoryImpl()
     override suspend fun fetchPokemonData(perPage:Int): PokemonResponse {
-        try {
+        return try {
             val response = repository.getPokemons(perPage)
-            return if (response.isSuccessful) {
+            if (response.isSuccessful) {
                 Log.e("INTERCEPTOR", response.message())
                 PokemonResponse.ResponseSuccess(response.body()!!.toDomain())
 
@@ -28,6 +28,6 @@ class GetPokemonsUseCaseImpl:GetPokemonsUseCase {
         }catch(e:Exception){
             PokemonResponse.ResponseError(e.message.toString())
         }
-        return PokemonResponse.ResponseError("Error de red")
+
     }
 }
