@@ -1,30 +1,20 @@
 package com.barryzeha.interceptorsapp.domain.usecases
 
-import android.util.Log
 import com.barryzeha.interceptorsapp.data.model.Pokemon
 import com.barryzeha.interceptorsapp.data.model.PokemonResult
 import com.barryzeha.interceptorsapp.data.repository.Repository
-import com.barryzeha.interceptorsapp.data.repository.RepositoryImpl
 import com.barryzeha.interceptorsapp.domain.model.PokemonData
 import com.barryzeha.interceptorsapp.domain.model.PokemonEntity
 import com.barryzeha.interceptorsapp.domain.model.PokemonResponse
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.spyk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.kotlin.any
-import org.mockito.kotlin.spy
 import retrofit2.Response
 
 

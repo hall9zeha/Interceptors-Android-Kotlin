@@ -5,8 +5,12 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.barryzeha.interceptorsapp.common.utils.ViewModelFactory
+import com.barryzeha.interceptorsapp.data.network.getApi
+import com.barryzeha.interceptorsapp.data.repository.RepositoryImpl
 import com.barryzeha.interceptorsapp.databinding.ActivityMainBinding
 import com.barryzeha.interceptorsapp.domain.model.PokemonData
+import com.barryzeha.interceptorsapp.domain.usecases.GetPokemonsUseCaseImpl
 import com.barryzeha.interceptorsapp.ui.adapter.RecyclerViewAdapter
 import com.barryzeha.interceptorsapp.ui.viewModel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -43,7 +47,11 @@ class MainActivity : AppCompatActivity() {
 
     }
     private fun setUpVieModel() {
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
+        val factory = ViewModelFactory(GetPokemonsUseCaseImpl(RepositoryImpl(getApi())))
+        //Inyectamos la dependencia en el viewModel a través de nuestro view model factory
+        viewModel = ViewModelProvider(this,factory)[MainViewModel::class.java]
+
         viewModel.pokemonResponse.observe(this,::updateUi)
         viewModel.msgUnsuccessful.observe(this){msg->
             Snackbar.make(bind.root,msg!!,Snackbar.LENGTH_LONG).show()

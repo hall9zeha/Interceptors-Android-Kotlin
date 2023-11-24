@@ -20,19 +20,18 @@ import kotlinx.coroutines.launch
  * Copyright (c)  All rights reserved.
  **/
 
-class MainViewModel : ViewModel() {
-    
-    private val getPokemonUseCase: GetPokemonsUseCase = GetPokemonsUseCaseImpl(RepositoryImpl(getApi()))
+class MainViewModel(private val getPokemonUseCase: GetPokemonsUseCase) : ViewModel() {
+
+    //private val getPokemonUseCase: GetPokemonsUseCase = GetPokemonsUseCaseImpl(RepositoryImpl(getApi()))
 
     private var _pokemonResponse: MutableLiveData<PokemonData> = MutableLiveData()
-    val pokemonResponse: LiveData<PokemonData> = _pokemonResponse
+    val pokemonResponse: LiveData<PokemonData> get() = _pokemonResponse
 
     private var _msgUnsuccessful:SingleMutableLiveData<String> = SingleMutableLiveData()
     val msgUnsuccessful:SingleMutableLiveData<String> = _msgUnsuccessful
 
     fun fetchPokemonData(perPage: Int) {
         viewModelScope.launch {
-
             when (val response = getPokemonUseCase.fetchPokemonData(perPage)) {
                 is PokemonResponse.ResponseSuccess -> {
                     _pokemonResponse.postValue(response.pokemonResponse)

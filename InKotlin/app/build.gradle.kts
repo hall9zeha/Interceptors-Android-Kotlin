@@ -80,5 +80,10 @@ dependencies {
     testImplementation ("org.mockito:mockito-inline:4.0.0")
     testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0.0")
 
+    //coroutines test
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2")
+
+    //Para testear los liveData
+    testImplementation ("androidx.arch.core:core-testing:2.2.0")
+
 }
