@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun setUpVieModel() {
 
-        val factory = ViewModelFactory(GetPokemonsUseCaseImpl(RepositoryImpl(getApi())))
+        val factory = ViewModelFactory{MainViewModel(GetPokemonsUseCaseImpl(RepositoryImpl(getApi())))}
         //Inyectamos la dependencia en el viewModel a través de nuestro view model factory
         viewModel = ViewModelProvider(this,factory)[MainViewModel::class.java]
 

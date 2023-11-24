@@ -14,10 +14,15 @@ import com.barryzeha.interceptorsapp.ui.viewModel.MainViewModel
 
 //Para testear el viewmodel necesitamos inyectar una instancia del caso de uso
 //para hacerlo sin librerías de inyección de dependencias usamos un ViewModelFactory
-class ViewModelFactory(private val useCase:GetPokemonsUseCase):ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        @Suppress("UNCHECKED_CAST")
-        return MainViewModel(useCase) as T
+
+//View model factory genérico para ser usado en cualquier clase ViewModel
+class ViewModelFactory<T:ViewModel>(  private val creator: () -> T):ViewModelProvider.Factory {
+      override fun <T : ViewModel> create(modelClass: Class<T>): T {
+          if(modelClass.isAssignableFrom(creator().javaClass)){
+              @Suppress("UNCHECKED_CAST")
+              return creator() as T
+          }
+          throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
 
 }

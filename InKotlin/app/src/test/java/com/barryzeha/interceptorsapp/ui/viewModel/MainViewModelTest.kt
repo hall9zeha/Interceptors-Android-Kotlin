@@ -73,9 +73,14 @@ class MainViewModelTest {
 
         //When
         viewModel.fetchPokemonData(20)
+
         //Then
+        //esperamos a que se complete la tarea asíncrona
         advanceTimeBy(1000)
+        //Verificamos si se llama al método
         coVerify { useCase.fetchPokemonData(20) }
+
         assertEquals(pokemonData,viewModel.pokemonResponse.value)
     }
+
 }
