@@ -35,7 +35,9 @@ class MyInterceptor:Interceptor{
                     chain.call().clone().execute()
 
                 }
-               setResponse(response,chain,429,response.message)
+                //Despúes de cumplir las cinco llamadas y no obtener un respuesta satisfactoria
+                //posteamos el mensaje recibido
+                setResponse(response,chain,429,response.message)
 
             }
         }

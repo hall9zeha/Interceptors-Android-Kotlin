@@ -6,9 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.barryzeha.interceptorsapp.R
 import com.barryzeha.interceptorsapp.common.loadUrl
-import com.barryzeha.interceptorsapp.data.model.Pokemon
-import com.barryzeha.interceptorsapp.data.model.PokemonResult
-import com.barryzeha.interceptorsapp.databinding.ItemLayoutBinding
+import com.barryzeha.interceptorsapp.databinding.PokemonItemBinding
 import com.barryzeha.interceptorsapp.domain.model.PokemonEntity
 
 
@@ -27,7 +25,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val context = parent.context
-        val itemView = LayoutInflater.from(context).inflate(R.layout.item_layout, parent, false)
+        val itemView = LayoutInflater.from(context).inflate(R.layout.pokemon_item, parent, false)
         val itemLoading = LayoutInflater.from(context).inflate(R.layout.item_loading,parent,false)
         return when(viewType){
             VIEW_TYPE_NORMAL->ViewHolder(itemView)
@@ -78,10 +76,10 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val bind = ItemLayoutBinding.bind(itemView)
+        private val bind = PokemonItemBinding.bind(itemView)
         fun onBind(pokemon: PokemonEntity) = with(bind) {
-
             ivPokemon.loadUrl(pokemon.imageUrl)
+            tvName.text=pokemon.name
         }
     }
     inner class ViewHolderLoading(itemView: View ):RecyclerView.ViewHolder(itemView){}
