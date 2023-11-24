@@ -83,4 +83,20 @@ class MainViewModelTest {
         assertEquals(pokemonData,viewModel.pokemonResponse.value)
     }
 
+    @Test
+    fun `if response is unsuccessful and contains interceptor message`() = runBlocking{
+        val response:String="currently  limited api call to 45 per minute"
+
+        //Given
+        coEvery { useCase.fetchPokemonData(20) } returns PokemonResponse.ResponseError(response)
+
+        //When
+        viewModel.fetchPokemonData(20)
+
+        //Then
+       // advanceTimeBy(1000)
+        coVerify { useCase.fetchPokemonData(20) }
+
+        assertEquals(response,viewModel.msgUnsuccessful.value)
+    }
 }

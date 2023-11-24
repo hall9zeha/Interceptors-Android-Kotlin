@@ -38,7 +38,8 @@ class MainViewModel(private val getPokemonUseCase: GetPokemonsUseCase) : ViewMod
                 }
                 is PokemonResponse.ResponseError -> {
                     _msgUnsuccessful.postValue(response.errorMsg)
-                    Log.e("RESPONSE_ERROR", response.errorMsg)
+                //Comentar los los informes en consola al realizar los test
+                //Log.e("RESPONSE_ERROR", response.errorMsg)
                 }
             }
 
