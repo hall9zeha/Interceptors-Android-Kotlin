@@ -1,5 +1,6 @@
 package com.barryzeha.interceptorsapp.common.utils
 
+import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Protocol
 import okhttp3.Request
@@ -14,8 +15,9 @@ import okhttp3.ResponseBody.Companion.toResponseBody
  **/
  
 class MyInterceptor:Interceptor{
+    private var tryCount =0
     override fun intercept(chain: Interceptor.Chain): Response {
-        var tryCount =0
+
         val request:Request = chain.request()
         val response = chain.proceed(request)
         return when(response.code){
@@ -25,13 +27,16 @@ class MyInterceptor:Interceptor{
             404->{setResponse(response,chain,404,"No hay conexión o la dirección no es correcta")}
             200->{setResponse(response,chain,200,"Respuesta de la API completada correctamente")}
             else->{
+                //Volvemos a llamar a la api  cinco veces más si hay algún error desconocido
                 if(!response.isSuccessful && tryCount<5){
                     Thread.sleep(2000)
                     tryCount++
                     response.close()
                     chain.call().clone().execute()
+
                 }
-               setResponse(response,chain,401,"Demasiadas peticiones al servidor")
+               setResponse(response,chain,429,response.message)
+
             }
         }
 
