@@ -9,14 +9,17 @@ An application to learn about interceptors with the Okhttp and Retrofit librarie
 * View model factory
 * Use case and view model unit tests
 ## It was used
-* [PokeAPI](https://pokeapi.co/) 
-* [Lyfecycle view model](https://developer.android.com/jetpack/androidx/releases/lifecycle)
+* [Kotlin coroutines](https://developer.android.com/kotlin/coroutines)
+* [Coroutines for tests](https://developer.android.com/kotlin/coroutines/test?hl=es-419)
+* [Clean code](https://developer.android.com/topic/architecture)
+* [Dots loading view](https://github.com/hall9zeha/DotsLoadingView)
 * [Glide](https://developer.android.com/training/dependency-injection/hilt-android)
+* [Lyfecycle view model](https://developer.android.com/jetpack/androidx/releases/lifecycle)
 * [Mockk para tests en Kotlin](https://mockk.io/)
 * [Mockito](https://site.mockito.org/)
-* [Coroutines for tests](https://developer.android.com/kotlin/coroutines/test?hl=es-419)
-* [Retrofit](https://square.github.io/retrofit/)
-* [OkHttp](https://square.github.io/okhttp/)
 * [MVVM](https://developer.android.com/jetpack/guide)
-* [Clean code](https://developer.android.com/topic/architecture)
+* [OkHttp](https://square.github.io/okhttp/)
+* [PokeAPI](https://pokeapi.co/) 
+* [Retrofit](https://square.github.io/retrofit/)
+
 
