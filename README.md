@@ -22,4 +22,5 @@ An application to learn about interceptors with the Okhttp and Retrofit librarie
 * [PokeAPI](https://pokeapi.co/) 
 * [Retrofit](https://square.github.io/retrofit/)
 
-
+## Screenshots
+<img src="https://github.com/hall9zeha/Interceptors-Android-Kotlin/blob/main/screenshots/screen1.jpg" width=40% height=40% />
